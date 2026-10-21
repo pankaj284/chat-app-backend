@@ -10,24 +10,35 @@ const app = expres();
 const cors = require('cors');
 
 const server = http.createServer(app);
+
+// CORS for Express routes (API calls)
 app.use(cors({
-    origin: ["chat-app-frontend-nine-sable.vercel.app", "https://chat-app-backend-9gr3.onrender.com"]
+    origin: [
+        "http://localhost:5173",
+        "https://chat-app-frontend-sepia-three.vercel.app"
+    ],
+    credentials: true   // optional but recommended
 }));
 
+app.use(expres.json());
+
+// CORS for Socket.io
 const io = new Server(server, {
     cors: {
-        origin: ["chat-app-frontend-nine-sable.vercel.app", "https://chat-app-backend-9gr3.onrender.com"],
-        methods: ["GET", "POST"]
+        origin: [
+            "http://localhost:5173",
+            "https://chat-app-frontend-sepia-three.vercel.app"
+        ],
+        methods: ["GET", "POST"],
+        credentials: true
     }
 });
-
 require('dotenv').config()
 
 const path = require('path');
 app.get('/test', (req, res) => res.sendFile(path.join(__dirname, 'test.socket.html')));
 
 
-app.use(expres.json());
 app.use('/api/users', userRoutes);
 app.use('/api/chats', chatRoutes);
 app.use('/api/messages', require('./routes/message.routes.js'));
