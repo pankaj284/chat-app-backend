@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
 let start = async () => {
 
     try {
-        server.listen(process.env.PORT || 5000, () => {
+        server.listen(process.env.PORT || 3000, () => {
             console.log(`server is listening on http://localhost:${process.env.PORT}`);
         })
         await mongoose.connect(process.env.MONGO_DB_URL);
