@@ -11,12 +11,12 @@ const cors = require('cors');
 
 const server = http.createServer(app);
 app.use(cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"]
+    origin: ["http://localhost:5173", "https://chat-app-backend-9gr3.onrender.com"]
 }));
 
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+        origin: ["http://localhost:5173", "https://chat-app-backend-9gr3.onrender.com"],
         methods: ["GET", "POST"]
     }
 });
