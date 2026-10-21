@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Socket Test</title>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+
+<body>
+    <h3>Socket Chat Tester</h3>
+    <div>
+        <label>Your User ID: </label>
+        <input id="myId" placeholder="Paste user _id from DB" style="width: 300px;">
+        <button onclick="connect()">Connect</button>
+    </div>
+    <div>
+        <label>Chat ID: </label>
+        <input id="chatId" placeholder="Paste chat _id from DB" style="width: 300px;">
+        <button onclick="joinChat()">Join Chat</button>
+    </div>
+    <div>
+        <label>Other User ID: </label>
+        <input id="otherId" placeholder="Paste other user _id" style="width: 300px;">
+        <button onclick="sendMsg()">Send Test Message</button>
+    </div>
+
+    <h4>Log:</h4>
+    <pre id="log" style="background: #f0f0f0; padding: 10px; height: 300px; overflow: auto;"></pre>
+
+
+    <script>
+        let socket = io("http://localhost:3000");
+        let log = (msg) => {
+            document.getElementById("log").innerText += msg + "\n";
+        };
+
+        function connect() {
+            socket = io("http://localhost:3000");
+
+            socket.on("connect", () => log("✅ Connected: " + socket.id));
+
+            socket.emit("setup", { _id: document.getElementById("myId").value });
+            socket.on("connected", () => log("✅ Setup complete"));
+
+            socket.on("message received", (msg) => {
+                log("📩 RECEIVED: " + JSON.stringify(msg, null, 2));
+            });
+        }
+
+        function joinChat() {
+            socket.emit("join chat", document.getElementById("chatId").value);
+            log("👥 Joined chat: " + document.getElementById("chatId").value);
+        }
+
+        function sendMsg() {
+            const fakeMsg = {
+                _id: "test_msg_" + Date.now(),
+                text: "Test message from tester",
+                senderId: { _id: document.getElementById("myId").value, name: "Tester" },
+                chatId: {
+                    _id: document.getElementById("chatId").value,
+                    participants: [
+                        { _id: document.getElementById("myId").value },
+                        { _id: document.getElementById("otherId").value }
+                    ]
+                }
+            };
+            socket.emit("new message", fakeMsg);
+            log("📤 Sent: " + fakeMsg.text);
+        }
+    </script>
+</body>
+
+</html>
