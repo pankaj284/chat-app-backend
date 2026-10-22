@@ -4,7 +4,7 @@
 The Node.js + Express + MongoDB backend for a real-time MERN chat application. Handles authentication, chats, messages, and real-time delivery via Socket.io.
 
 **[Live API](https://chat-app-backend-9gr3.onrender.com)**  
-**[Frontend Repository](https://github.com/YOUR_USERNAME/YOUR_FRONTEND_REPO)**
+**[Frontend Repository](https://github.com/pankaj284/chat-app-frontend.git)**
 
 ---
 
